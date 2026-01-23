@@ -40,9 +40,9 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Your Links</h3>
 
                 @if($links->count() > 0)
-                    <div class="space-y-4">
+                    <div id="link-list" class="space-y-4">
                         @foreach($links as $link)
-                            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <div data-id="{{ $link->id }}" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200">
                                 <div>
                                     <h4 class="font-bold text-gray-800">{{ $link->title }}</h4>
                                     <a href="{{ $link->url }}" target="_blank" class="text-sm text-indigo-500 hover:underline">{{ $link->url }}</a>
@@ -68,3 +68,43 @@
         </div>
     </div>
 </x-app-layout>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('link-list');
+        
+        // Inisialisasi SortableJS
+        var sortable = Sortable.create(el, {
+            animation: 150, // Animasi halus saat digeser
+            ghostClass: 'bg-indigo-100', // Warna background saat item sedang ditarik
+            
+            // Event saat user SELESAI menggeser (Mouse dilepas)
+            onEnd: function () {
+                // 1. Ambil urutan ID baru
+                // Hasilnya array contoh: ["5", "2", "3"]
+                let ids = Array.from(el.children).map(item => item.getAttribute('data-id'));
+
+                // 2. Kirim ke Backend pakai Fetch API / Axios
+                // Kita pakai Fetch native biar gak perlu install axios npm lagi
+                fetch('{{ route('links.reorder') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Wajib di Laravel!
+                    },
+                    body: JSON.stringify({ ids: ids })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Opsional: Kasih notifikasi kecil kalau berhasil
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Gagal menyimpan urutan!');
+                });
+            }
+        });
+    });
+</script>

@@ -69,4 +69,19 @@ class LinkController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Link updated successfully.');
     }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        foreach ($request->ids as $index => $id) {
+            auth()->user()->links()->where('id', $id)->update(
+                ['position' => $index
+            ]);
+        }
+
+        return response()->json(['message' => 'Urutan berhasil diupdate.']);
+    }
 }

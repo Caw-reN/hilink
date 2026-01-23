@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $user = User::where('username', $username)->firstOrFail();
 
         // 2. Ambil link user (tanpa tanda kurung, seperti yang kita bahas sebelumnya)
-        $links = $user->links;
+        $links = $user->links()->orderBy('position', 'asc')->get();
 
         // 3. Tampilkan view
         return view('public_profile', [

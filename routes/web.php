@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
     Route::get('/links/{link}/edit', [LinkController::class, 'edit'])->name('links.edit');
     Route::put('/links/{link}', [LinkController::class, 'update'])->name('links.update');
+    Route::post('/links/reorder', [LinkController::class, 'reorder'])->name('links.reorder');
 });
 
 
