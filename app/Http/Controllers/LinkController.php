@@ -41,4 +41,32 @@ class LinkController extends Controller
 
         return redirect()->back()->with('success', 'Link deleted successfully.');
     }
+
+    public function edit(Link $link)
+    {
+        if($link->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('links.edit', compact('link'));
+    }
+
+    public function update(Request $request, Link $link)
+    {
+        if ($link->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'url' => 'required|url|max:255',
+        ]);
+
+        $link->update([
+            'title' => $request->title,
+            'url' => $request->url,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Link updated successfully.');
+    }
 }

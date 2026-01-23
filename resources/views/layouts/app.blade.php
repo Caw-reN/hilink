@@ -32,5 +32,11 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        @stack('scripts')
     </body>
 </html>

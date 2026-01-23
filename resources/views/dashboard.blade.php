@@ -48,6 +48,9 @@
                                     <a href="{{ $link->url }}" target="_blank" class="text-sm text-indigo-500 hover:underline">{{ $link->url }}</a>
                                 </div>
                                 <div class="flex items-center gap-2">
+                                    <a href="{{ route('links.edit', $link) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-semibold">
+                                        Edit
+                                    </a>
                                     <form action="{{ route('links.destroy', $link) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?');">
                                         @csrf
                                         @method('DELETE')
