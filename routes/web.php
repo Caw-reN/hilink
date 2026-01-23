@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
 });
 
-Route::get('/{username}', [ProfileController::class, 'show'])->name('public.profile');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,3 +23,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/{username}', [ProfileController::class, 'show'])->name('public.profile');

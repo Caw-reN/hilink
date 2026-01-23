@@ -10,7 +10,15 @@
 
     <div class="text-center mb-8 px-4">
         <div class="w-24 h-24 bg-gray-400 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-             <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random" alt="Avatar" class="w-full h-full object-cover">
+             @if($user->avatar)
+                <img src="{{ asset('storage/' . $user->avatar) }}" 
+                    alt="{{ $user->name }}" 
+                    class="w-full h-full object-cover">
+            @else
+                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random&size=200" 
+                    alt="{{ $user->name }}" 
+                    class="w-full h-full object-cover">
+            @endif
         </div>
         
         <h1 class="text-xl font-bold text-gray-800">{{ $user->name }}</h1>

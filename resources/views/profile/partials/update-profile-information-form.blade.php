@@ -32,14 +32,6 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="bio" :value="__('Bio / Deskripsi Singkat')" />
-            <textarea id="bio" name="bio" rows="3" 
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                placeholder="Ceritakan sedikit tentang dirimu...">{{ old('bio', $user->bio) }}</textarea>
-            <x-input-error class="mt-2" :messages="$errors->get('bio')" />
-        </div>
-
-        <div class="mt-4">
             <x-input-label for="avatar" :value="__('Foto Profil')" />
             
             @if($user->avatar)
