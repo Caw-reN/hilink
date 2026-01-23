@@ -8,11 +8,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
+     */
+    public function show($username)
+    {
+        // 1. Cari user berdasarkan username
+        // firstOrFail() akan otomatis menampilkan 404 jika user tidak ditemukan
+        $user = User::where('username', $username)->firstOrFail();
+
+        // 2. Ambil link user (tanpa tanda kurung, seperti yang kita bahas sebelumnya)
+        $links = $user->links;
+
+        // 3. Tampilkan view
+        return view('public_profile', [
+            'user' => $user,
+            'links' => $links
+        ]);
+    }
+    /**
+     * Show the form for editing the user's profile.
      */
     public function edit(Request $request): View
     {
