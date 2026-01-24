@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
+use App\Models\LinkVisit;
 use Illuminate\Http\Request;
 
 class LinkController extends Controller
@@ -10,7 +11,13 @@ class LinkController extends Controller
     
     public function index()
     {
-        $links = auth()->user()->links()->orderBy('position', 'asc')->get();
+        $links = auth()
+                ->user()
+                ->links()
+                ->withCount('visits')
+                ->orderBy('position', 'asc')
+                ->get();
+                
         return view('dashboard', compact('links'));
     }
 
@@ -83,5 +90,16 @@ class LinkController extends Controller
         }
 
         return response()->json(['message' => 'Urutan berhasil diupdate.']);
+    }
+
+    public function visit(Link $link)
+    {
+        LinkVisit::create([
+            'link_id' => $link->id,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
+        return redirect()->away($link->url);
     }
 }

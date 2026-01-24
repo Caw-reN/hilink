@@ -27,7 +27,7 @@
 
     <div class="w-full max-w-md px-4 space-y-4">
         @foreach($links as $link)
-            <a href="{{ $link->url }}" target="_blank" 
+            <a href="{{ route('links.visit', $link) }}" target="_blank"
                class="block w-full bg-white text-gray-800 text-center py-4 rounded-lg shadow hover:shadow-md hover:scale-[1.02] transition-transform duration-200 border border-gray-200 font-semibold">
                 {{ $link->title }}
             </a>

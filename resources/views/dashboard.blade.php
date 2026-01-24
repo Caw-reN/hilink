@@ -47,6 +47,11 @@
                                     <h4 class="font-bold text-gray-800">{{ $link->title }}</h4>
                                     <a href="{{ $link->url }}" target="_blank" class="text-sm text-indigo-500 hover:underline">{{ $link->url }}</a>
                                 </div>
+
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-400">
+                                    {{ $link->visits_count }} clicks
+                                </span>
+
                                 <div class="flex items-center gap-2">
                                     <a href="{{ route('links.edit', $link) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-semibold">
                                         Edit
