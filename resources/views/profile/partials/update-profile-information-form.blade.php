@@ -23,6 +23,18 @@
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        <div>
+            <x-input-label for="bg_color" :value="__('Background Color')" />
+            <div class="flex items-center gap-4 mt-1">
+                <input type="color" id="bg_color" name="bg_color" 
+                    class="h-10 w-20 p-1 rounded border border-gray-300 cursor-pointer"
+                    value="{{ old('bg_color', $user->bg_color ?? '#f3f4f6') }}">
+                
+                <span class="text-sm text-gray-500">Pilih warna tema profilmu.</span>
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('bg_color')" />
+        </div>
+
         <div class="mt-4">
             <x-input-label for="bio" :value="__('Bio / Deskripsi Singkat')" />
             <textarea id="bio" name="bio" rows="3" 
