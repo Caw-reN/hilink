@@ -143,12 +143,11 @@
     <footer class="bg-gray-900 text-gray-400 py-12">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
-                <span class="text-white font-bold text-lg">MyLinkApp</span>
+                <span class="text-white font-bold text-lg">HiLink</span>
                 <p class="text-sm mt-1">&copy; 2026 Developed by Hibrizi.</p>
             </div>
             <div class="flex gap-6 text-sm">
                 <a href="#" class="hover:text-white transition">Tentang</a>
-                <a href="#" class="hover:text-white transition">Harga</a>
                 <a href="#" class="hover:text-white transition">Login</a>
             </div>
         </div>
