@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>{{ config('app.name', 'HiLink') }} - Semua Link, Satu Tempat</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -31,25 +31,28 @@
         .delay-1 { animation-delay: 0.2s; }
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
-        .delay-5 { animation-delay: 1s; }
+        
+        /* Fix untuk tampilan mobile Safari toolbar */
+        @supports (-webkit-touch-callout: none) {
+            .min-h-screen { height: -webkit-fill-available; }
+        }
     </style>
 </head>
-<body class="antialiased font-sans bg-[#F3F4F6] overflow-x-hidden relative">
+<body class="antialiased font-sans bg-[#F3F4F6] overflow-x-hidden relative selection:bg-indigo-500 selection:text-white">
 
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-purple-300/40 blur-3xl animate-float-slow"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-300/40 blur-3xl animate-float-medium" style="animation-delay: -2s;"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-purple-300/40 blur-3xl animate-float-slow"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-indigo-300/40 blur-3xl animate-float-medium" style="animation-delay: -2s;"></div>
     </div>
 
-    <nav class="fixed top-0 left-0 right-0 z-50 pt-4 px-4 sm:px-6 animate__animated animate__fadeInDown">
+    <nav class="fixed top-0 left-0 right-0 z-50 pt-2 sm:pt-4 px-2 sm:px-6 animate__animated animate__fadeInDown">
         <div class="max-w-6xl mx-auto">
-            <div class="bg-white/80 backdrop-blur-md rounded-full shadow-sm border border-white/40 py-3 px-6 flex justify-between items-center transition-all hover:bg-white/90">
+            <div class="bg-white/80 backdrop-blur-md rounded-full shadow-sm border border-white/40 py-2.5 px-4 sm:px-6 flex justify-between items-center transition-all hover:bg-white/90">
                 <a href="/" class="flex items-center gap-2 group">
                    <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fas fa-share-nodes text-sm"></i>
                     </div>
-                    <span class="text-xl font-black tracking-tighter text-gray-900">
+                    <span class="text-lg sm:text-xl font-black tracking-tighter text-gray-900">
                         HiLink<span class="text-indigo-600">.</span>
                     </span>
                 </a>
@@ -57,11 +60,11 @@
                 <div class="flex items-center gap-2 text-sm font-semibold">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="px-3 py-2 text-gray-700 hover:text-indigo-600 transition text-xs sm:text-sm">Dashboard</a>
                         @else
                             <a href="{{ route('login') }}" class="hidden sm:block px-4 py-2 text-gray-700 hover:text-gray-900 transition">Masuk</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                                <a href="{{ route('register') }}" class="bg-gray-900 hover:bg-black text-white px-4 sm:px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 text-xs sm:text-sm">
                                     Daftar
                                 </a>
                             @endif
@@ -72,41 +75,44 @@
         </div>
     </nav>
 
-    <section class="min-h-screen flex items-center pt-24 pb-12 relative">
-        <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
+    <section class="min-h-screen flex items-center pt-24 pb-12 relative px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center w-full">
             
-            <div class="space-y-8 text-center lg:text-left">
+            <div class="space-y-6 sm:space-y-8 text-center lg:text-left">
                 
-                <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight leading-tight animate__animated animate__fadeInUp">
+                <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] animate__animated animate__fadeInUp">
                     Semua Link.<br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">
                         Satu Tempat.
                     </span>
                 </h1>
                 
-                <p class="text-lg text-gray-600 max-w-lg mx-auto lg:mx-0 animate__animated animate__fadeInUp delay-1 leading-relaxed">
+                <p class="text-base sm:text-lg text-gray-600 max-w-lg mx-auto lg:mx-0 animate__animated animate__fadeInUp delay-1 leading-relaxed px-2 sm:px-0">
                     Gabungkan semua sosial media dan portofolio kamu hanya dalam satu halaman bio yang simpel, modern, dan gratis.
                 </p>
 
-                <div class="animate__animated animate__fadeInUp delay-2">
-                    <form action="{{ route('register') }}" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0 relative p-2 bg-white rounded-full shadow-lg border border-gray-100 ring-4 ring-gray-100/50">
-                        <div class="flex-1 relative flex items-center pl-5">
-                            <span class="text-gray-400 font-semibold mr-1 select-none">hilink.id/</span>
+                <div class="animate__animated animate__fadeInUp delay-2 w-full max-w-md mx-auto lg:mx-0">
+                    <form action="{{ route('register') }}" method="GET" class="flex flex-col sm:flex-row gap-3 relative p-2 bg-white rounded-[2rem] sm:rounded-full shadow-lg border border-gray-100 ring-4 ring-gray-100/50">
+                        
+                        <div class="flex-1 relative flex items-center pl-5 h-12 sm:h-auto border-b sm:border-b-0 border-gray-100 sm:border-none">
+                            <span class="text-gray-400 font-semibold mr-1 select-none text-sm sm:text-base">hilink.id/</span>
                             <input 
                                 type="text" 
                                 name="username" 
                                 required 
-                                placeholder="username-kamu" 
-                                class="flex-1 py-3 bg-transparent border-0 focus:ring-0 text-gray-900 font-bold placeholder:text-gray-300 outline-none w-full" 
+                                placeholder="username" 
+                                class="flex-1 py-3 bg-transparent border-0 focus:ring-0 text-gray-900 font-bold placeholder:text-gray-300 outline-none w-full text-base sm:text-lg" 
                                 autocomplete="off"
                             >
                         </div>
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full font-bold transition-all hover:scale-105 flex items-center justify-center gap-2 shrink-0 shadow-md">
-                            Buat <span class="hidden sm:inline">Sekarang</span> <i class="fas fa-arrow-right"></i>
+
+                        <button type="submit" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 sm:py-3 rounded-full font-bold transition-all active:scale-95 hover:scale-105 flex items-center justify-center gap-2 shrink-0 shadow-md text-base">
+                            Buat <span class="inline">Sekarang</span> <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
-                    <p class="text-xs text-gray-500 mt-3 ml-4">
-                        <i class="fas fa-bolt text-yellow-500 mr-1"></i> Gratis selamanya. Tidak butuh kartu kredit.
+                    
+                    <p class="text-xs text-gray-500 mt-3 sm:ml-4 flex items-center justify-center lg:justify-start gap-1">
+                        <i class="fas fa-check-circle text-green-500"></i> Gratis selamanya. Tanpa ribet.
                     </p>
                 </div>
             </div>
@@ -144,35 +150,18 @@
                         <div class="text-lg">12.5K</div>
                     </div>
                 </div>
-                <div class="absolute bottom-40 -right-16 p-4 bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 animate-float-slow text-sm font-bold text-gray-800 flex items-center gap-3" style="animation-delay: -2s;">
-                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"><i class="fas fa-palette"></i></div>
-                    <div>
-                        <div class="text-xs text-gray-500">Theme</div>
-                        <div class="text-lg">Custom</div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <footer class="text-center py-6 text-gray-400 text-sm animate__animated animate__fadeIn delay-5 relative z-10">
-        <p>&copy; {{ date('Y') }} HiLink. Dibuat dengan <i class="fas fa-heart text-red-500 animate-pulse"></i> oleh Hibrizi.</p>
+    <footer class="text-center py-6 text-gray-400 text-xs sm:text-sm animate__animated animate__fadeIn delay-5 relative z-10 pb-8 sm:pb-6">
+        <p>&copy; {{ date('Y') }} HiLink.</p>
     </footer>
 
     <script>
-        // Mencegah browser mengingat posisi scroll lama saat refresh
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
-        }
-
-        // Memaksa halaman kembali ke paling atas saat dimuat
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        }
-        
-        window.onload = function() {
-            window.scrollTo(0, 0);
-        }
+        if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
+        window.onbeforeunload = function () { window.scrollTo(0, 0); }
+        window.onload = function() { window.scrollTo(0, 0); }
     </script>
 
 </body>
