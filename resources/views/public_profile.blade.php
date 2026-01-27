@@ -1,3 +1,32 @@
+@php
+    
+    $baseClass = "block w-full text-center py-4 transition-all duration-300 font-semibold relative overflow-hidden group hover:scale-[1.02] shadow-sm";
+    $shapeClass = $user->btn_shape ?? 'rounded-xl';
+
+    
+    $styleClass = "";
+    switch ($user->btn_style) {
+        case 'outline':
+            
+            $styleClass = "bg-transparent border-2 border-white text-white hover:bg-white hover:text-black";
+            break;
+        case 'soft':
+            
+            $styleClass = "bg-white/80 backdrop-blur-md border border-white/50 text-gray-900 hover:bg-white";
+            break;
+        default: 
+            
+            $styleClass = "bg-white border border-gray-200 text-gray-900 hover:shadow-lg";
+            break;
+    }
+
+    
+    $finalButtonClass = "$baseClass $shapeClass $styleClass";
+@endphp
+
+<!DOCTYPE html>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,9 +57,7 @@
 
     <div class="w-full max-w-md px-4 space-y-4 mb-auto">
         @foreach($links as $link)
-            <a href="{{ route('links.visit', $link) }}" target="_blank"
-               class="block w-full bg-white/90 hover:bg-white text-gray-800 text-center py-4 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-200 font-semibold relative overflow-hidden group">
-                
+            <a href="{{ route('links.visit', $link) }}" target="_blank" class="{{ $finalButtonClass }}">    
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 
                 <span class="relative z-10">{{ $link->title }}</span>

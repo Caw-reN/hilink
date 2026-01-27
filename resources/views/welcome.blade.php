@@ -1,171 +1,179 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'MyLinkApp') }} - Satu Link untuk Semua</title>
+    <title>{{ config('app.name', 'HiLink') }} - Semua Link, Satu Tempat</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600,700,800&display=swap" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="antialiased font-sans text-gray-900 bg-white">
-
-    <nav class="sticky top-6 z-50 w-full px-4 sm:px-6 lg:px-8 mt-6">
     
-        <div class="bg-white rounded-full shadow-xl max-w-7xl mx-auto px-6 py-3 md:py-4 flex justify-between items-center ring-1 ring-gray-900/5 transition-all duration-300">
-            
-            <div class="flex items-center gap-2">
-                <i class="fas fa-star-of-life text-2xl text-black animate-pulse-slow"></i>
-                
-                <span class="text-2xl font-bold tracking-tight text-black">
-                    HiLink
-                </span>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        /* Animasi Floating Halus */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes floatMedium {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        .animate-float-slow { animation: floatSlow 6s ease-in-out infinite; }
+        .animate-float-medium { animation: floatMedium 5s ease-in-out infinite; }
+        
+        /* Utility Delay Animate.css */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+    </style>
+</head>
+<body class="antialiased font-sans bg-[#F3F4F6] overflow-x-hidden relative">
+
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-purple-300/40 blur-3xl animate-float-slow"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-300/40 blur-3xl animate-float-medium" style="animation-delay: -2s;"></div>
+    </div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 pt-4 px-4 sm:px-6 animate__animated animate__fadeInDown">
+        <div class="max-w-6xl mx-auto">
+            <div class="bg-white/80 backdrop-blur-md rounded-full shadow-sm border border-white/40 py-3 px-6 flex justify-between items-center transition-all hover:bg-white/90">
+                <a href="/" class="flex items-center gap-2 group">
+                   <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-share-nodes text-sm"></i>
+                    </div>
+                    <span class="text-xl font-black tracking-tighter text-gray-900">
+                        HiLink<span class="text-indigo-600">.</span>
+                    </span>
+                </a>
+
+                <div class="flex items-center gap-2 text-sm font-semibold">
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="hidden sm:block px-4 py-2 text-gray-700 hover:text-gray-900 transition">Masuk</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                                    Daftar
+                                </a>
+                            @endif
+                        @endauth
+                    @endif
+                </div>
             </div>
-
-            
-
-            <div class="flex items-center gap-3">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-black transition px-4">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-md text-black font-semibold bg-gray-100 hover:bg-gray-200 transition text-[15px]">
-                            Log in
-                        </a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-6 py-2.5 rounded-full text-white font-semibold bg-gray-900 hover:bg-black hover:scale-105 transition transform shadow-lg text-[15px]">
-                                Sign up free
-                            </a>
-                        @endif
-                    @endauth
-                @endif
-            </div>
-
         </div>
     </nav>
 
-    <header class="relative overflow-hidden pt-12 pb-24 lg:pt-20">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col-reverse lg:flex-row items-center gap-12">
+    <section class="min-h-screen flex items-center pt-24 pb-12 relative">
+        <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
             
-            <div class="lg:w-1/2 text-center lg:text-left space-y-6">
-                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight">
-                    Satu Link untuk <br>
-                    <span class="text-indigo-600">Segala Identitasmu.</span>
+            <div class="space-y-8 text-center lg:text-left">
+                
+                <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight leading-tight animate__animated animate__fadeInUp">
+                    Semua Link.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">
+                        Satu Tempat.
+                    </span>
                 </h1>
-                <p class="text-lg text-gray-600 max-w-lg mx-auto lg:mx-0">
-                    Gabungkan TikTok, Instagram, Twitter, dan portofoliomu dalam satu halaman cantik. Bagikan ke audiensmu dengan mudah.
+                
+                <p class="text-lg text-gray-600 max-w-lg mx-auto lg:mx-0 animate__animated animate__fadeInUp delay-1 leading-relaxed">
+                    Gabungkan semua sosial media dan portofolio kamu hanya dalam satu halaman bio yang simpel, modern, dan gratis.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                    <form action="{{ route('register') }}" method="GET" class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4 w-full">
-    
-                        <div class="relative rounded-full shadow-sm flex-1 max-w-md group">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-                                <span class="text-gray-500 font-medium sm:text-lg">hilink.id/</span>
-                            </div>
-                            
+
+                <div class="animate__animated animate__fadeInUp delay-2">
+                    <form action="{{ route('register') }}" method="GET" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0 relative p-2 bg-white rounded-full shadow-lg border border-gray-100 ring-4 ring-gray-100/50">
+                        <div class="flex-1 relative flex items-center pl-5">
+                            <span class="text-gray-400 font-semibold mr-1 select-none">hilink.id/</span>
                             <input 
                                 type="text" 
                                 name="username" 
-                                required
-                                class="block w-full rounded-full border-0 py-4 pl-28 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 bg-white transition-shadow" 
-                                placeholder="nama-kamu"
+                                required 
+                                placeholder="username-kamu" 
+                                class="flex-1 py-3 bg-transparent border-0 focus:ring-0 text-gray-900 font-bold placeholder:text-gray-300 outline-none w-full" 
                                 autocomplete="off"
                             >
                         </div>
-
-                        <button type="submit" class="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-full font-bold shadow-lg transform transition hover:-translate-y-1 flex items-center justify-center gap-2 whitespace-nowrap">
-                            Buat Link Kamu <i class="fas fa-arrow-right text-sm"></i>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full font-bold transition-all hover:scale-105 flex items-center justify-center gap-2 shrink-0 shadow-md">
+                            Buat <span class="hidden sm:inline">Sekarang</span> <i class="fas fa-arrow-right"></i>
                         </button>
-
                     </form>
+                    <p class="text-xs text-gray-500 mt-3 ml-4">
+                        <i class="fas fa-bolt text-yellow-500 mr-1"></i> Gratis selamanya. Tidak butuh kartu kredit.
+                    </p>
                 </div>
             </div>
 
-            <div class="lg:w-1/2 flex justify-center relative">
-                <div class="absolute top-0 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                <div class="absolute bottom-0 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-
-                <div class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[500px] w-[280px] shadow-2xl z-10">
-                    <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
-                    <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
-                    <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
-                    <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-                    <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white dark:bg-gray-800 relative">
-                        <div class="bg-indigo-500 h-full w-full flex flex-col items-center pt-10 px-4 space-y-3">
-                            <div class="w-20 h-20 bg-white rounded-full border-4 border-indigo-300 mb-2"></div>
-                            <div class="w-32 h-4 bg-white/50 rounded-full"></div>
-                            <div class="w-full h-10 bg-white rounded-lg mt-6 shadow-sm flex items-center px-4 text-xs text-gray-400">Instagram</div>
-                            <div class="w-full h-10 bg-white rounded-lg shadow-sm flex items-center px-4 text-xs text-gray-400">Website Toko</div>
-                            <div class="w-full h-10 bg-white rounded-lg shadow-sm flex items-center px-4 text-xs text-gray-400">Kontak WA</div>
+            <div class="relative hidden lg:flex justify-center items-center animate__animated animate__fadeInRight delay-1">
+                 
+                 <div class="relative z-10 animate-float-slow">
+                    <div class="w-[300px] h-[600px] bg-gray-900 rounded-[3rem] border-[12px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-white/20 relative">
+                         <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-gray-900 rounded-b-xl z-20"></div>
+                         
+                         <div class="w-full h-full bg-gradient-to-b from-indigo-500 via-purple-500 to-indigo-600 flex flex-col items-center pt-16 px-6 gap-4">
+                            <div class="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full mb-2 animate__animated animate__zoomIn delay-2 border-2 border-white/30"></div>
+                            <div class="w-40 h-5 bg-white/20 rounded-full animate__animated animate__fadeIn delay-3"></div>
+                            
+                            <div class="w-full h-14 bg-white rounded-xl shadow-lg flex items-center px-4 text-sm font-bold text-indigo-900 animate__animated animate__fadeInUp delay-3 cursor-pointer hover:scale-105 transition mt-4 transform hover:-translate-y-1">
+                                <i class="fab fa-instagram text-2xl mr-4 text-pink-600"></i> 
+                                <span>Instagram</span>
+                            </div>
+                            <div class="w-full h-14 bg-white rounded-xl shadow-lg flex items-center px-4 text-sm font-bold text-indigo-900 animate__animated animate__fadeInUp delay-4 cursor-pointer hover:scale-105 transition transform hover:-translate-y-1">
+                                <i class="fab fa-tiktok text-2xl mr-4 text-black"></i> 
+                                <span>TikTok</span>
+                            </div>
+                             <div class="w-full h-14 bg-white/90 rounded-xl shadow-lg flex items-center px-4 text-sm font-bold text-indigo-900 animate__animated animate__fadeInUp delay-5 opacity-90">
+                                <i class="fas fa-globe text-2xl mr-4 text-blue-600"></i> 
+                                <span>Website</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </header>
 
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 mb-12">Kenapa Memilih Kami?</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fas fa-paint-brush"></i>
+                <div class="absolute top-24 -left-16 p-4 bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 animate-float-medium text-sm font-bold text-gray-800 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <div class="text-xs text-gray-500">Total Views</div>
+                        <div class="text-lg">12.5K</div>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Desain Kustom</h3>
-                    <p class="text-gray-600">Ubah warna, font, dan latar belakang sesuai dengan branding personal kamu.</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fas fa-chart-line"></i>
+                <div class="absolute bottom-40 -right-16 p-4 bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 animate-float-slow text-sm font-bold text-gray-800 flex items-center gap-3" style="animation-delay: -2s;">
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"><i class="fas fa-palette"></i></div>
+                    <div>
+                        <div class="text-xs text-gray-500">Theme</div>
+                        <div class="text-lg">Custom</div>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Analitik Lengkap</h3>
-                    <p class="text-gray-600">Lihat berapa banyak orang yang mengklik link kamu setiap harinya.</p>
-                </div>
-
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Aman & Cepat</h3>
-                    <p class="text-gray-600">Dibangun dengan teknologi terbaru untuk memastikan link kamu selalu bisa diakses.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-gray-400 py-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <span class="text-white font-bold text-lg">HiLink</span>
-                <p class="text-sm mt-1">&copy; 2026 Developed by Hibrizi.</p>
-            </div>
-            <div class="flex gap-6 text-sm">
-                <a href="#" class="hover:text-white transition">Tentang</a>
-                <a href="#" class="hover:text-white transition">Login</a>
-            </div>
-        </div>
+    <footer class="text-center py-6 text-gray-400 text-sm animate__animated animate__fadeIn delay-5 relative z-10">
+        <p>&copy; {{ date('Y') }} HiLink. Dibuat dengan <i class="fas fa-heart text-red-500 animate-pulse"></i> oleh Hibrizi.</p>
     </footer>
 
-    <style>
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+    <script>
+        // Mencegah browser mengingat posisi scroll lama saat refresh
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
         }
-        .animate-blob {
-            animation: blob 7s infinite;
+
+        // Memaksa halaman kembali ke paling atas saat dimuat
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
         }
-        .animation-delay-2000 {
-            animation-delay: 2s;
+        
+        window.onload = function() {
+            window.scrollTo(0, 0);
         }
-    </style>
+    </script>
+
 </body>
 </html>

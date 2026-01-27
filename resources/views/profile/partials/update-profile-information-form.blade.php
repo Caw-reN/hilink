@@ -35,6 +35,28 @@
             <x-input-error class="mt-2" :messages="$errors->get('bg_color')" />
         </div>
 
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            
+            <div>
+                <x-input-label for="btn_shape" :value="__('Button Shape')" />
+                <select id="btn_shape" name="btn_shape" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <option value="rounded-none" {{ old('btn_shape', $user->btn_shape) == 'rounded-none' ? 'selected' : '' }}>Kotak (Square)</option>
+                    <option value="rounded-xl"   {{ old('btn_shape', $user->btn_shape) == 'rounded-xl'   ? 'selected' : '' }}>Standar (Rounded)</option>
+                    <option value="rounded-full" {{ old('btn_shape', $user->btn_shape) == 'rounded-full' ? 'selected' : '' }}>Bulat (Pill)</option>
+                </select>
+            </div>
+
+            <div>
+                <x-input-label for="btn_style" :value="__('Button Style')" />
+                <select id="btn_style" name="btn_style" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <option value="solid"   {{ old('btn_style', $user->btn_style) == 'solid'   ? 'selected' : '' }}>Solid (Putih Penuh)</option>
+                    <option value="outline" {{ old('btn_style', $user->btn_style) == 'outline' ? 'selected' : '' }}>Outline (Garis)</option>
+                    <option value="soft"    {{ old('btn_style', $user->btn_style) == 'soft'    ? 'selected' : '' }}>Soft (Transparan)</option>
+                </select>
+            </div>
+
+        </div>
+
         <div class="mt-4">
             <x-input-label for="bio" :value="__('Bio / Deskripsi Singkat')" />
             <textarea id="bio" name="bio" rows="3" 

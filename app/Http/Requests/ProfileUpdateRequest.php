@@ -19,6 +19,8 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:500'],
             'bg_color' => ['nullable', 'string', 'max:7'],
+            'btn_shape'=> ['required', 'in:rounded-none,rounded-xl,rounded-full'],
+            'btn_style'=> ['required', 'in:solid,outline,soft'],
             'email' => [
                 'required',
                 'string',
