@@ -89,7 +89,7 @@ class LinkController extends Controller
 
         $link->save();
 
-        return back()->with('success', 'Link berhasil diupdate!');  
+        return redirect()->route('dashboard')->with('success', 'Link berhasil diupdate!');
     }
 
     public function reorder(Request $request)

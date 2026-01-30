@@ -8,6 +8,23 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
+            @if (session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 shadow-sm rounded-r mb-4" role="alert">
+                    <p class="font-bold">Berhasil!</p>
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 shadow-sm rounded-r mb-4" role="alert">
+                    <p class="font-bold">Ada Kesalahan:</p>
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Link</h3>
                 
