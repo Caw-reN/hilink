@@ -57,8 +57,15 @@
 
     <div class="w-full max-w-md px-4 space-y-4 mb-auto">
         @foreach($links as $link)
+
             <a href="{{ route('links.visit', $link) }}" target="_blank" class="{{ $finalButtonClass }}">    
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                
+                @if($link->icon_path)
+                    <img src="{{ asset('storage/' . $link->icon_path) }}" 
+                        alt="icon" 
+                        class="w-8 h-8 rounded object-cover absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                @endif
                 
                 <span class="relative z-10">{{ $link->title }}</span>
             </a>

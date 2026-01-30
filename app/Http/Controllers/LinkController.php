@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use App\Models\LinkVisit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LinkController extends Controller
 {
@@ -23,19 +24,24 @@ class LinkController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'url' => 'required|url|max:255',
+            'icon_path' => 'nullable|image|max:2048',
         ]);
 
-        $position = auth()->user()->links()->max('position') + 1;
+        $iconPath = null;
+        if($request->hasFile('icon')) {
+            $iconPath = $request->file('icon')->store('link-icons', 'public');
+        }
 
-        auth()->user()->links()->create([
-            'title' => $request->title,
-            'url' => $request->url,
+        $request->user()->links()->create([
+            'title' => $validated['title'],
+            'url' => $validated['url'],
+            'icon_path' => $iconPath,
         ]);
 
-        return redirect()->back()->with('success', 'Link added successfully.');
+        return back()->with('success', 'Link Berhasil Ditambahkan.');
     }
 
     public function destroy(Link $link)
@@ -60,21 +66,30 @@ class LinkController extends Controller
 
     public function update(Request $request, Link $link)
     {
-        if ($link->user_id !== auth()->id()) {
-            abort(403);
+        if($link->user_id !== auth()->id()) {
+            abort(403, 'Akses Ditolak');
         }
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'url' => 'required|url|max:255',
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'url' => 'required|url',
+            'icon' => 'nullable|image|max:2048',
         ]);
 
-        $link->update([
-            'title' => $request->title,
-            'url' => $request->url,
-        ]);
+        $link->title = $validated['title'];
+        $link->url = $validated['url'];
 
-        return redirect()->route('dashboard')->with('success', 'Link updated successfully.');
+        if($request->hasFile('icon')) {
+            if($link->icon_path) {
+                Storage::disk('public')->delete($link->icon_path);
+            }
+
+            $link->icon_path = $request->file('icon')->store('link-icons', 'public');
+        }
+
+        $link->save();
+
+        return back()->with('success', 'Link berhasil diupdate!');  
     }
 
     public function reorder(Request $request)

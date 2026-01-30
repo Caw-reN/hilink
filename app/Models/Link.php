@@ -13,6 +13,7 @@ class Link extends Model
         'url',
         'is_active',
         'position',
+        'icon_path',
     ];
 
     public function user()

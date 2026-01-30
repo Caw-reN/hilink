@@ -9,9 +9,20 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 
-                <form action="{{ route('links.update', $link) }}" method="POST" class="space-y-4">
+                <form action="{{ route('links.update', $link) }}" enctype="multipart/form-data" method="POST" class="space-y-4">
                     @csrf
-                    @method('PUT') <div>
+                    @method('PUT') 
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Icon (Opsional)</label>
+                        <input type="file" name="icon" class="block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-indigo-50 file:text-indigo-700
+                            hover:file:bg-indigo-100
+                        "/>
+                    </div>
+                    <div>
                         <label class="block font-medium text-sm text-gray-700">Judul Link</label>
                         <input type="text" name="title" value="{{ old('title', $link->title) }}" 
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>

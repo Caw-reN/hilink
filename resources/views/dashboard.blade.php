@@ -11,9 +11,20 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Link</h3>
                 
-                <form action="{{ route('links.store') }}" method="POST" class="flex flex-col sm:flex-row gap-4">
+                <form action="{{ route('links.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-4">
                     @csrf
                     
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Icon (Opsional)</label>
+                        <input type="file" name="icon" class="block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-indigo-50 file:text-indigo-700
+                            hover:file:bg-indigo-100
+                        "/>
+                    </div>
+
                     <div class="flex-1">
                         <input type="text" name="title" placeholder="Link Title (e.g. My Instagram)" 
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
