@@ -45,11 +45,9 @@
     <meta property="og:site_name" content="HiLink">
     
     @php
-        // Ganti 'profile_photo_path' sesuai nama kolom di databasemu (Opsi B yang kamu punya)
         $ogImage = $user->profile_photo_path 
                     ? asset('storage/' . $user->profile_photo_path) 
                     : asset('images/default-avatar.png'); 
-                    // Pastikan kamu punya file default-avatar.png di public/images atau ganti link ini
     @endphp
     <meta property="og:image" content="{{ $ogImage }}">
 
