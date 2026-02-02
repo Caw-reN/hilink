@@ -30,9 +30,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $user->name }} - Linktree Clone</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>{{ $user->name }} | Bio Link</title>
+
+    <meta name="description" content="Kunjungi profil {{ $user->name }} untuk melihat semua link media sosial dan portofolio terbaru.">
+    <meta name="author" content="{{ $user->name }}">
+
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="{{ $user->name }} - Official Bio Link">
+    <meta property="og:description" content="Tap untuk melihat kumpulan link, portofolio, dan kontak saya.">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="HiLink">
+    
+    @php
+        // Ganti 'profile_photo_path' sesuai nama kolom di databasemu (Opsi B yang kamu punya)
+        $ogImage = $user->profile_photo_path 
+                    ? asset('storage/' . $user->profile_photo_path) 
+                    : asset('images/default-avatar.png'); 
+                    // Pastikan kamu punya file default-avatar.png di public/images atau ganti link ini
+    @endphp
+    <meta property="og:image" content="{{ $ogImage }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $user->name }} - Bio Link">
+    <meta name="twitter:description" content="Lihat profil dan link lengkap {{ $user->name }} di sini.">
+    <meta name="twitter:image" content="{{ $ogImage }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex flex-col items-center py-10 transition-colors duration-500" 
@@ -66,7 +90,7 @@
                         alt="icon" 
                         class="w-8 h-8 rounded object-cover absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                 @endif
-                
+
                 <span class="relative z-10">{{ $link->title }}</span>
             </a>
         @endforeach
