@@ -45,8 +45,8 @@
     <meta property="og:site_name" content="HiLink">
     
     @php
-        $ogImage = $user->profile_photo_path 
-                    ? asset('storage/' . $user->profile_photo_path) 
+        $ogImage = $user->avatar 
+                    ? asset('storage/' . $user->avatar) 
                     : asset('images/default-avatar.png'); 
     @endphp
     <meta property="og:image" content="{{ $ogImage }}">
