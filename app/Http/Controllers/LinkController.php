@@ -71,21 +71,21 @@ class LinkController extends Controller
 
     public function update(Request $request, Link $link)
     {
-        if($link->user_id !== auth()->id()) {
+        if ($link->user_id !== auth()->id()) {
             abort(403, 'Akses Ditolak');
         }
 
         $validated = $request->validate([
-            'title' => 'required|max:255',
-            'url' => 'required|url',
-            'icon' => 'nullable|image|max:2048',
+            'title' => 'required|string|max:255',
+            'url'   => 'required|url',
+            'icon'  => 'nullable|image|max:2048', // Max 2MB
         ]);
 
         $link->title = $validated['title'];
-        $link->url = $validated['url'];
+        $link->url   = $validated['url'];
 
-        if($request->hasFile('icon')) {
-            if($link->icon_path) {
+        if ($request->hasFile('icon')) {
+            if ($link->icon_path) {
                 Storage::disk('public')->delete($link->icon_path);
             }
 

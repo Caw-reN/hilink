@@ -19,8 +19,6 @@ class ProfileController extends Controller
      */
     public function show($username)
     {
-        // 1. Cari user berdasarkan username
-        // firstOrFail() akan otomatis menampilkan 404 jika user tidak ditemukan
         $user = User::where('username', $username)->firstOrFail();
 
         $today = now()->startOfDay();
@@ -38,10 +36,8 @@ class ProfileController extends Controller
             ]);
         }
 
-        // 2. Ambil link user (tanpa tanda kurung, seperti yang kita bahas sebelumnya)
         $links = $user->links()->orderBy('position', 'asc')->get();
 
-        // 3. Tampilkan view
         return view('public_profile', [
             'user' => $user,
             'links' => $links
@@ -62,27 +58,44 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'bio' => ['nullable', 'string', 'max:500'],
-            'avatar' => ['nullable', 'image', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
-        $request->user()->fill($request->validated());
+
+        $request->user()->fill($validated);
 
         if($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        if ($request->hasFile('avatar')) {
-            if($request->user){
-                Storage::delete('public/' . $request->user()->avatar);
+        if($request->hasFile('avatar')) {
+            if($request->user()->avatar) {
+                Storage::disk('public')->delete($request->user()->avatar);
             }
 
             $path = $request->file('avatar')->store('avatars', 'public');
             $request->user()->avatar = $path;
         }
+
         $request->user()->save();
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+
+        return Redirect::back()->with('success', 'Tampilan profil berhasil diupdate!');
+    }
+    
+    public function updateAppearance(Request $request)
+    {
+        // 1. Validasi manual yang simpel (Cuma warna & tombol)
+        $validated = $request->validate([
+            'bg_color'  => ['nullable', 'string', 'max:7'],
+            'btn_shape' => ['nullable', 'string', 'max:50'],
+            'btn_style' => ['nullable', 'string', 'max:50'],
+        ]);
+
+        // 2. Update data user
+        $request->user()->fill($validated);
+        $request->user()->save();
+
+        // 3. Balik ke dashboard
+        return back()->with('success', 'Tampilan profil berhasil diupdate!');
     }
 
     /**
