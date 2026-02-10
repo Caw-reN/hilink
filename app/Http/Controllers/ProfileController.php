@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ProfileVisit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,21 @@ class ProfileController extends Controller
         // 1. Cari user berdasarkan username
         // firstOrFail() akan otomatis menampilkan 404 jika user tidak ditemukan
         $user = User::where('username', $username)->firstOrFail();
+
+        $today = now()->startOfDay();
+
+        $hasVisited = ProfileVisit::where('user_id', $user->id)
+            ->where('ip_address', request()->ip())
+            ->where('created_at', '>=', $today)
+            ->exists();
+
+        if (!$hasVisited) {
+            ProfileVisit::create([
+                'user_id' => $user->id,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+        }
 
         // 2. Ambil link user (tanpa tanda kurung, seperti yang kita bahas sebelumnya)
         $links = $user->links()->orderBy('position', 'asc')->get();

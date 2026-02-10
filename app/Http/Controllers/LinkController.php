@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use App\Models\LinkVisit;
+use App\Models\ProfileVisit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,14 +13,18 @@ class LinkController extends Controller
     
     public function index()
     {
-        $links = auth()
-                ->user()
-                ->links()
-                ->withCount('visits')
-                ->orderBy('position', 'asc')
-                ->get();
-                
-        return view('dashboard', compact('links'));
+        $user = auth()->user();
+        
+        $links = $user->links()
+                    ->withCount('visits')
+                    ->orderBy('position', 'asc')
+                    ->get();
+
+        $totalViews = ProfileVisit::where('user_id', $user->id)->count();
+
+        $totalLinkClicks = $user->links()->withCount('visits')->get()->sum('visits_count');
+        
+        return view('dashboard', compact('links', 'totalViews', 'totalLinkClicks'));
     }
 
     public function store(Request $request)

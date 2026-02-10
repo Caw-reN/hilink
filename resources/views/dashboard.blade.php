@@ -63,7 +63,16 @@
                     </div>
                 @endif
             </div>
-
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-indigo-500 text-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold">Total Pengunjung</h3>
+                    <p class="text-3xl font-bold">{{ $totalViews }}</p>
+                </div>
+                <div class="bg-pink-500 text-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold">Total Klik Link</h3>
+                    <p class="text-3xl font-bold">{{ $totalLinkClicks }}</p>
+                </div>
+            </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Your Links</h3>
 

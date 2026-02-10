@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Link::class);
     }
+
+    public function visits()
+    {
+        return $this->hasMany(ProfileVisit::class);
+    }
 }
