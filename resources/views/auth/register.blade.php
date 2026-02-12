@@ -32,13 +32,6 @@
                 @csrf
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nama Lengkap</label>
-                    <input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name"
-                           class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-0 text-sm transition duration-200">
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                </div>
-
-                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
                     <input id="email" type="email" name="email" :value="old('email')" required autocomplete="username"
                            class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-0 text-sm transition duration-200">

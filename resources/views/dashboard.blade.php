@@ -108,7 +108,7 @@
                         <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-10 group-hover:opacity-20 transition-opacity"></div>
                         
                         <div class="relative z-10 mt-4">
-                            @if(Auth::user()->profile_photo_path)
+                            @if(Auth::user()->avatar)
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-white shadow-lg mb-3">
                             @else
                                 <div class="w-24 h-24 rounded-full mx-auto bg-indigo-100 flex items-center justify-center text-indigo-600 text-3xl font-bold border-4 border-white shadow-lg mb-3">
@@ -121,7 +121,7 @@
                                 hilink.id/{{ strtolower(str_replace(' ', '', Auth::user()->username)) }} ↗
                             </a>
                             
-                            <a href="{{ url('/' . Auth::user()->name) }}" target="_blank" 
+                            <a href="{{ url('/' . Auth::user()->username) }}" target="_blank" 
                                class="block w-full border-2 border-indigo-100 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 font-bold py-2 rounded-xl transition-all text-sm">
                                 Lihat Profil Publik
                             </a>

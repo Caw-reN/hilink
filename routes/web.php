@@ -26,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/profile/appearance', [ProfileController::class, 'updateAppearance'])->name('profile.appearance');
+    
+    Route::get('/setup_username', [App\Http\Controllers\SetupUsernameController::class, 'index'])->name('setup.username');
+    Route::post('/setup_username', [App\Http\Controllers\SetupUsernameController::class, 'store'])->name('setup.username.store');
+    Route::get('/check-username-availability', [App\Http\Controllers\SetupUsernameController::class, 'check'])->name('username.check');
 });
 
 require __DIR__.'/auth.php';
