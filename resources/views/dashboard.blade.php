@@ -50,13 +50,13 @@
                         </form>
                     </div>
 
-                    <div class="space-y-3">
+                    <div id="sortable-links" class="space-y-3">
                         <div class="flex items-center justify-between ml-1 mb-2">
                             <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Link Aktif ({{ $links->count() }})</h3>
                         </div>
                         
                         @forelse ($links as $link)
-                            <div class="group bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
+                            <div data-id="{{ $link->id }}" class="group bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 cursor-move">
                                 <div class="text-gray-300 cursor-grab hover:text-gray-500">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
                                 </div>
@@ -196,7 +196,7 @@
                                     </label>
 
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="btn_style" value="soft" class="peer sr-only" 
+                                        <input type="radio" name="btn_style" value="glass" class="peer sr-only" 
                                             {{ Auth::user()->btn_style == 'glass' ? 'checked' : '' }}>
                                         <div class="h-9 bg-gray-200 text-gray-800 border-2 border-transparent bg-opacity-50 peer-checked:border-gray-400 peer-checked:bg-gray-300 flex items-center justify-center text-xs font-bold rounded-lg transition-all">Glass</div>
                                     </label>
@@ -213,4 +213,63 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var el = document.getElementById('sortable-links');
+            
+            if (el) {
+                var sortable = Sortable.create(el, {
+                    animation: 150,
+                    handle: '.cursor-grab', 
+                    ghostClass: 'bg-indigo-50',
+                    
+                    onEnd: function (evt) {
+                        // --- CARA BARU (LEBIH AMAN) ---
+                        // Kita ambil semua elemen anak secara manual dan baca attribute data-id nya
+                        // Ini memastikan tidak ada 'magic' dari library yang menambahkan string aneh
+                        let itemElements = el.querySelectorAll('[data-id]');
+                        let order = Array.from(itemElements).map(item => {
+                            // Paksa bersihkan ID di sisi Client sebelum dikirim
+                            let rawId = item.getAttribute('data-id');
+                            // Hapus semua karakter yang BUKAN angka
+                            return rawId.replace(/\D/g, ''); 
+                        });
+
+                        console.log("Mengirim urutan (Clean):", order);
+
+                        fetch("{{ route('links.reorder') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                ids: order
+                            })
+                        })
+                        .then(async response => {
+                            if (!response.ok) {
+                                // Baca pesan error dari server jika merah
+                                const text = await response.text();
+                                throw new Error(text || response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Sukses:", data);
+                        })
+                        .catch(error => {
+                            console.error("Gagal menyimpan:", error);
+                            // alert("Gagal menyimpan. Cek Console (F12) untuk detail.");
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    @endpush
 </x-app-layout>

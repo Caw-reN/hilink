@@ -100,16 +100,18 @@ class LinkController extends Controller
     public function reorder(Request $request)
     {
         $request->validate([
-            'ids' => 'required|array',
+            'ids' => 'required|array', 
         ]);
 
         foreach ($request->ids as $index => $id) {
-            auth()->user()->links()->where('id', $id)->update(
-                ['position' => $index
-            ]);
+            $cleanId = (int) $id;
+            Link::where('id', $id)
+                ->where('user_id', auth()->id()) 
+                ->update(['position' => $index]);
         }
 
-        return response()->json(['message' => 'Urutan berhasil diupdate.']);
+        return response()->json(['status' => 'success']);
+
     }
 
     public function visit(Link $link)
