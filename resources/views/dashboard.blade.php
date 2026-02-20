@@ -145,38 +145,54 @@
                             Kustomisasi Tampilan
                         </h3>
                         
-                        <form action="{{ route('profile.appearance') }}" method="POST">
+                        <form action="{{ route('profile.appearance') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             
-                            <div class="mb-5">
-                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Background Color</label>
-                                <div class="flex items-center gap-3">
-                                    <input type="color" name="bg_color" value="{{ Auth::user()->bg_color ?? '#ffffff' }}" 
-                                        class="h-10 w-full rounded-lg cursor-pointer border-2 border-gray-200">
+                            <div x-data="{ bgType: '{{ Auth::user()->bg_type ?? 'color' }}' }" class="mb-6">
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Tipe Background</label>
+                                
+                                <div class="grid grid-cols-3 gap-2 mb-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="bg_type" value="color" x-model="bgType" class="peer sr-only">
+                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-lg transition-all">Warna Solid</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="bg_type" value="gradient" x-model="bgType" class="peer sr-only">
+                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-lg transition-all">Gradient</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="bg_type" value="image" x-model="bgType" class="peer sr-only">
+                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-lg transition-all">Gambar</div>
+                                    </label>
                                 </div>
-                            </div>
 
-                            <div class="mb-5">
-                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Bentuk Tombol</label>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="btn_shape" value="rounded-none" class="peer sr-only" 
-                                            {{ Auth::user()->btn_shape == 'rounded-none' ? 'checked' : '' }}>
-                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-none transition-all">Kotak</div>
-                                    </label>
+                                <div x-show="bgType === 'color'" class="p-3 border border-gray-100 rounded-xl bg-gray-50">
+                                    <input type="color" name="bg_color" value="{{ Auth::user()->bg_color ?? '#ffffff' }}" class="h-10 w-full rounded-lg cursor-pointer border-2 border-gray-200">
+                                </div>
 
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="btn_shape" value="rounded-xl" class="peer sr-only" 
-                                            {{ (Auth::user()->btn_shape ?? 'rounded-xl') == 'rounded-xl' ? 'checked' : '' }}>
-                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-xl transition-all">Standar</div>
-                                    </label>
+                                <div x-show="bgType === 'gradient'" class="p-3 border border-gray-100 rounded-xl bg-gray-50" x-cloak>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="bg_gradient" value="linear-gradient(to right, #ff7e5f, #feb47b)" class="peer sr-only" {{ Auth::user()->bg_gradient == 'linear-gradient(to right, #ff7e5f, #feb47b)' ? 'checked' : '' }}>
+                                            <div class="h-10 rounded-lg peer-checked:ring-2 ring-offset-2 ring-indigo-500" style="background: linear-gradient(to right, #ff7e5f, #feb47b);"></div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="bg_gradient" value="linear-gradient(to right, #4facfe, #00f2fe)" class="peer sr-only" {{ Auth::user()->bg_gradient == 'linear-gradient(to right, #4facfe, #00f2fe)' ? 'checked' : '' }}>
+                                            <div class="h-10 rounded-lg peer-checked:ring-2 ring-offset-2 ring-indigo-500" style="background: linear-gradient(to right, #4facfe, #00f2fe);"></div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="bg_gradient" value="linear-gradient(to right, #43e97b, #38f9d7)" class="peer sr-only" {{ Auth::user()->bg_gradient == 'linear-gradient(to right, #43e97b, #38f9d7)' ? 'checked' : '' }}>
+                                            <div class="h-10 rounded-lg peer-checked:ring-2 ring-offset-2 ring-indigo-500" style="background: linear-gradient(to right, #43e97b, #38f9d7);"></div>
+                                        </label>
+                                    </div>
+                                </div>
 
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="btn_shape" value="rounded-full" class="peer sr-only" 
-                                            {{ Auth::user()->btn_shape == 'rounded-full' ? 'checked' : '' }}>
-                                        <div class="h-9 bg-gray-100 border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 flex items-center justify-center text-xs font-bold rounded-full transition-all">Bulat</div>
-                                    </label>
+                                <div x-show="bgType === 'image'" class="p-3 border border-gray-100 rounded-xl bg-gray-50" x-cloak>
+                                    <input type="file" name="bg_image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                                    @if(Auth::user()->bg_image)
+                                        <div class="mt-2 text-xs text-emerald-600 font-medium">✓ Gambar saat ini sudah terpasang.</div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -228,14 +244,9 @@
                     ghostClass: 'bg-indigo-50',
                     
                     onEnd: function (evt) {
-                        // --- CARA BARU (LEBIH AMAN) ---
-                        // Kita ambil semua elemen anak secara manual dan baca attribute data-id nya
-                        // Ini memastikan tidak ada 'magic' dari library yang menambahkan string aneh
                         let itemElements = el.querySelectorAll('[data-id]');
                         let order = Array.from(itemElements).map(item => {
-                            // Paksa bersihkan ID di sisi Client sebelum dikirim
                             let rawId = item.getAttribute('data-id');
-                            // Hapus semua karakter yang BUKAN angka
                             return rawId.replace(/\D/g, ''); 
                         });
 
@@ -253,7 +264,6 @@
                         })
                         .then(async response => {
                             if (!response.ok) {
-                                // Baca pesan error dari server jika merah
                                 const text = await response.text();
                                 throw new Error(text || response.statusText);
                             }
@@ -264,7 +274,6 @@
                         })
                         .catch(error => {
                             console.error("Gagal menyimpan:", error);
-                            // alert("Gagal menyimpan. Cek Console (F12) untuk detail.");
                         });
                     }
                 });

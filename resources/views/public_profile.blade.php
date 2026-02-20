@@ -1,31 +1,39 @@
 @php
-    
+    // --- 1. LOGIKA TOMBOL ---
     $baseClass = "block w-full text-center py-4 transition-all duration-300 font-semibold relative overflow-hidden group hover:scale-[1.02] shadow-sm";
     $shapeClass = $user->btn_shape ?? 'rounded-xl';
 
-    
     $styleClass = "";
     switch ($user->btn_style) {
         case 'outline':
-            
             $styleClass = "bg-transparent border-2 border-white text-white hover:bg-white hover:text-black";
             break;
-        case 'soft':
-            
+        case 'glass': // Diubah dari 'soft' ke 'glass' menyesuaikan form di dashboard
             $styleClass = "bg-white/80 backdrop-blur-md border border-white/50 text-gray-900 hover:bg-white";
             break;
         default: 
-            
             $styleClass = "bg-white border border-gray-200 text-gray-900 hover:shadow-lg";
             break;
     }
 
-    
     $finalButtonClass = "$baseClass $shapeClass $styleClass";
+
+    // --- 2. LOGIKA BACKGROUND BARU ---
+    $bgStyle = "";
+    
+    // Cek tipe background apa yang dipilih user
+    if (($user->bg_type ?? 'color') == 'image' && $user->bg_image) {
+        // Jika Gambar
+        $imageUrl = asset('storage/' . $user->bg_image);
+        $bgStyle = "background-image: url('{$imageUrl}'); background-size: cover; background-position: center; background-attachment: fixed;";
+    } elseif (($user->bg_type ?? 'color') == 'gradient' && $user->bg_gradient) {
+        // Jika Gradient
+        $bgStyle = "background: {$user->bg_gradient};";
+    } else {
+        // Default: Warna Solid
+        $bgStyle = "background-color: " . ($user->bg_color ?? '#f3f4f6') . ";";
+    }
 @endphp
-
-<!DOCTYPE html>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,10 +65,14 @@
     <meta name="twitter:image" content="{{ $ogImage }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10 transition-colors duration-500" 
-      style="background-color: {{ $user->bg_color ?? '#f3f4f6' }};"> 
 
-    <div class="text-center mb-8 px-4 w-full max-w-2xl">
+<body class="min-h-screen flex flex-col items-center py-10 transition-colors duration-500" style="{{ $bgStyle }}"> 
+
+    @if(($user->bg_type ?? 'color') == 'image')
+        <div class="fixed inset-0 bg-black/30 -z-10"></div>
+    @endif
+
+    <div class="text-center mb-8 px-4 w-full max-w-2xl relative z-10">
         <div class="w-24 h-24 bg-gray-400 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg relative group">
              @if($user->avatar)
                 <img src="{{ asset('storage/' . $user->avatar) }}" 
@@ -73,13 +85,16 @@
             @endif
         </div>
         
-        <h1 class="text-xl font-bold text-gray-800 drop-shadow-sm">{{ $user->name }}</h1>
-        <p class="text-sm text-gray-600 mt-2 max-w-md mx-auto leading-relaxed">{{ $user->bio }}</p>
+        <h1 class="text-xl font-bold drop-shadow-sm {{ in_array($user->bg_type, ['gradient', 'image']) ? 'text-white' : 'text-gray-800' }}">
+            {{ $user->name }}
+        </h1>
+        <p class="text-sm mt-2 max-w-md mx-auto leading-relaxed {{ in_array($user->bg_type, ['gradient', 'image']) ? 'text-gray-100' : 'text-gray-600' }}">
+            {{ $user->bio }}
+        </p>
     </div>
 
-    <div class="w-full max-w-md px-4 space-y-4 mb-auto">
+    <div class="w-full max-w-md px-4 space-y-4 mb-auto relative z-10">
         @foreach($links as $link)
-
             <a href="{{ route('links.visit', $link) }}" target="_blank" class="{{ $finalButtonClass }}">    
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 
@@ -100,7 +115,7 @@
         @endif
     </div>
 
-    <div class="mt-16 text-center w-full pb-8">
+    <div class="mt-16 text-center w-full pb-8 relative z-10">
         <div class="inline-block bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm border border-white/50 mx-4">
             <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wider">
                 Ingin buat bio link seperti ini?

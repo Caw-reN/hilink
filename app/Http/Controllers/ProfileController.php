@@ -83,19 +83,40 @@ class ProfileController extends Controller
     
     public function updateAppearance(Request $request)
     {
-        // 1. Validasi manual yang simpel (Cuma warna & tombol)
-        $validated = $request->validate([
-            'bg_color'  => ['nullable', 'string', 'max:7'],
-            'btn_shape' => ['nullable', 'string', 'max:50'],
-            'btn_style' => ['nullable', 'string', 'max:50'],
+        $user = auth()->user();
+
+        $request->validate([
+            'bg_type' => 'required|in:color,gradient,image',
+            'bg_gradient' => 'nullable|string',
+            'bg_color' => 'nullable|string',
+            'bg_image' => 'nullable|image|max:2048',
+            'btn_shape' => 'nullable|string',
+            'btn_style' => 'nullable|string',
         ]);
 
-        // 2. Update data user
-        $request->user()->fill($validated);
-        $request->user()->save();
+        $user->bg_type = $request->bg_type;
+        $user->bg_color = $request->bg_color;
+        $user->bg_gradient = $request->bg_gradient;
 
-        // 3. Balik ke dashboard
-        return back()->with('success', 'Tampilan profil berhasil diupdate!');
+        if($request->has('btn_shape')) {
+            $user->btn_shape = $request->btn_shape;
+        }
+
+        if($request->has('btn_style')) {
+            $user->btn_style = $request->btn_style;
+        }
+
+        if($request->hasFile('bg_image')) {
+            if($user->bg_image) {
+                Storage::disk('public')->delete($user->bg_image);
+            }
+
+            $user->bg_image = $request->file('bg_image')->store('backgrounds', 'public');
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Tampilan berhasil diperbarui!');
     }
 
     /**

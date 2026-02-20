@@ -25,6 +25,9 @@ class User extends Authenticatable
         'bio',
         'avatar',
         'bg_color',
+        'bg_type',
+        'bg_gradient',
+        'bg_image',
         'btn_shape',
         'btn_style',
     ];
